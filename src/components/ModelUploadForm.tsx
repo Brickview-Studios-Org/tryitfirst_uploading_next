@@ -55,6 +55,7 @@ const ModelUploadForm: React.FC = () => {
       setFiles({ ...files, [fileName]: file });
       setFileTypes({ ...fileTypes, [fileName]: fileType });
     }
+    console.log(files)
   };
 
   const handleUpload = async (bucketName: string, fileName: string) => {
@@ -64,13 +65,19 @@ const ModelUploadForm: React.FC = () => {
       params: { bucket_name: bucketName, file_type: fileType }
     });
     const { upload_url } = response.data;
+    const { file_key } = response.data;
 
+    console.log("signed url response " )
     console.log(response.data)
+    console.log("the file going to be uploaded " )
+    console.log( files[fileName])
     // Upload file to S3 using signed URL
     await axios.put(upload_url, files[fileName]);
 
     // Store the file URL or any other action you want to perform after uploading
-    setFields({ ...fields, [fileName]: `https://${bucketName}.s3.amazonaws.com/${fileName}.${fileType}` });
+    await setFields({ ...fields, [fileName]: `https://${bucketName}.s3.amazonaws.com/${file_key}` });
+
+    console.log(fields);
   };
 
   const handleSubmit = async () => {
@@ -112,6 +119,25 @@ const ModelUploadForm: React.FC = () => {
           handleUpload={handleUpload}
         />
         {/* Add buttons for 'glb' and 'usdz' */}
+        <FileUploadButton 
+          file={files.glb}
+          bucketName="tryitproductmodels"
+          fileType={fileTypes.glb}
+          fileName="glb"
+          buttonLabel="Upload"
+          handleFileChange={handleFileChange}
+          handleUpload={handleUpload}
+        />
+
+         <FileUploadButton 
+          file={files.usdz}
+          bucketName="tryitproductmodels"
+          fileType={fileTypes.usdz}
+          fileName="usdz"
+          buttonLabel="Upload"
+          handleFileChange={handleFileChange}
+          handleUpload={handleUpload}
+        />
         <button
           className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
           type="button"
