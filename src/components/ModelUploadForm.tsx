@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import FileUploadButton from './FileUploadButton';
+import TextField from './TextField';
 
 interface IFields {
   name: string;
@@ -25,10 +26,20 @@ interface IFileTypes {
 }
 
 const ModelUploadForm: React.FC = () => {
-  const [fields, setFields] = useState<IFields>({
+  const [fields, setFields] = useState({
+    brandID: '',
     name: '',
     description: '',
-    price: ''
+    price: '',
+    currency: '',
+    discountPercent: '',
+    discountedPrice: '',
+    category: '',
+    weight: '',
+    materials: '',
+    height: '',
+    width: '',
+    length: '',
   });
 
   const [files, setFiles] = useState<IFiles>({
@@ -42,6 +53,10 @@ const ModelUploadForm: React.FC = () => {
     glb: '',
     usdz: ''
   });
+
+  const isFormValid = () => {
+    return Object.values(fields).every(Boolean) && Object.values(files).every(Boolean);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -82,33 +97,28 @@ const ModelUploadForm: React.FC = () => {
 
   const handleSubmit = async () => {
     // Submit all data to your backend
+    if (isFormValid()) {
+      console.log(fields)
     await axios.post('https://0zwhtezm4f.execute-api.ap-south-1.amazonaws.com/TryItFirst/add_product', fields);
+    }
   };
 
   return (
     <div className="p-8 bg-gray-200">
       <form>
-        <input 
-          type="text" 
-          name="name" 
-          placeholder="Item Name" 
-          onChange={handleChange} 
-          className="block mb-4 p-2 w-full border rounded"
-        />
-        <input 
-          type="text" 
-          name="description" 
-          placeholder="Description" 
-          onChange={handleChange} 
-          className="block mb-4 p-2 w-full border rounded"
-        />
-        <input 
-          type="number" 
-          name="price" 
-          placeholder="Price" 
-          onChange={handleChange} 
-          className="block mb-4 p-2 w-full border rounded"
-        />
+      <TextField name="brandID" placeholder="Brand ID" handleChange={handleChange} />
+      <TextField name="name" placeholder="Name" handleChange={handleChange} />
+      <TextField name="description" placeholder="Description" handleChange={handleChange} />
+      <TextField name="price" placeholder="Price" handleChange={handleChange} />
+      <TextField name="currency" placeholder="Currency" handleChange={handleChange} />
+      <TextField name="discountPercent" placeholder="Discount Percent" handleChange={handleChange} />
+      <TextField name="discountedPrice" placeholder="Discounted Price" handleChange={handleChange} />
+      <TextField name="category" placeholder="Category" handleChange={handleChange} />
+      <TextField name="weight" placeholder="Weight" handleChange={handleChange} />
+      <TextField name="materials" placeholder="Materials" handleChange={handleChange} />
+      <TextField name="height" placeholder="Height" handleChange={handleChange} />
+      <TextField name="width" placeholder="Width" handleChange={handleChange} />
+      <TextField name="length" placeholder="Length" handleChange={handleChange} />
         <FileUploadButton 
           file={files.poster}
           bucketName="tryitproductimages"

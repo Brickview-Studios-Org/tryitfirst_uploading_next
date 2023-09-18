@@ -18,7 +18,7 @@ const TextField: React.FC<TextFieldProps> = ({ name, placeholder, handleChange }
         id={name}
         placeholder={placeholder}
         onChange={handleChange}
-        className="border p-2 w-full"
+        className="border p-2 w-full text-gray-900"
       />
     </div>
   );
