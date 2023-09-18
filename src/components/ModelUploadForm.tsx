@@ -49,7 +49,7 @@ const ModelUploadForm: React.FC = () => {
     usdz: null
   });
 
-  const [fileTypes, setFileTypes] = useState<IFileTypes>({
+  const [fileTypes, setFileTypes] = useState<IFileTypes>({ 
     poster: '',
     glb: '',
     usdz: ''
