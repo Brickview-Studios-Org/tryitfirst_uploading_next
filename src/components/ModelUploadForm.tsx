@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import FileUploadButton from './FileUploadButton';
 import TextField from './TextField';
+import FormSegment from './FormSegment';
 
 interface IFields {
   name: string;
@@ -48,7 +49,7 @@ const ModelUploadForm: React.FC = () => {
     usdz: null
   });
 
-  const [fileTypes, setFileTypes] = useState<IFileTypes>({
+  const [fileTypes, setFileTypes] = useState<IFileTypes>({ 
     poster: '',
     glb: '',
     usdz: ''
@@ -104,56 +105,164 @@ const ModelUploadForm: React.FC = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-200">
-      <form>
-      <TextField name="brandID" placeholder="Brand ID" handleChange={handleChange} />
-      <TextField name="name" placeholder="Name" handleChange={handleChange} />
-      <TextField name="description" placeholder="Description" handleChange={handleChange} />
-      <TextField name="price" placeholder="Price" handleChange={handleChange} />
-      <TextField name="currency" placeholder="Currency" handleChange={handleChange} />
-      <TextField name="discountPercent" placeholder="Discount Percent" handleChange={handleChange} />
-      <TextField name="discountedPrice" placeholder="Discounted Price" handleChange={handleChange} />
-      <TextField name="category" placeholder="Category" handleChange={handleChange} />
-      <TextField name="weight" placeholder="Weight" handleChange={handleChange} />
-      <TextField name="materials" placeholder="Materials" handleChange={handleChange} />
-      <TextField name="height" placeholder="Height" handleChange={handleChange} />
-      <TextField name="width" placeholder="Width" handleChange={handleChange} />
-      <TextField name="length" placeholder="Length" handleChange={handleChange} />
-        <FileUploadButton 
-          file={files.poster}
-          bucketName="tryitproductimages"
-          fileType={fileTypes.poster}
-          fileName="poster"
-          buttonLabel="Upload"
-          handleFileChange={handleFileChange}
-          handleUpload={handleUpload}
-        />
-        {/* Add buttons for 'glb' and 'usdz' */}
-        <FileUploadButton 
-          file={files.glb}
-          bucketName="tryitproductmodels"
-          fileType={fileTypes.glb}
-          fileName="glb"
-          buttonLabel="Upload"
-          handleFileChange={handleFileChange}
-          handleUpload={handleUpload}
-        />
+    <div className="p-4">
+      <form className='flex flex-col gap-8 w-full'>
+        {/* Brand Details */}
+        <FormSegment segmentHeader='Brand Details'>
+          <TextField name="brandID" placeholder="Brand ID" fieldType='number' isRequired={true} handleChange={handleChange} />
+        </FormSegment>
+        
+        {/*<div className='flex flex-col p-4 gap-2 rounded-xl border-[1px] border-blue-500 shadow-md'>
+          <h1 className='text-xl font-bold text-gray-400'>Brand Details</h1>
+          <TextField name="brandID" placeholder="Brand ID" fieldType='number' isRequired={true} handleChange={handleChange} />
+        </div>*/}
 
-         <FileUploadButton 
-          file={files.usdz}
-          bucketName="tryitproductmodels"
-          fileType={fileTypes.usdz}
-          fileName="usdz"
-          buttonLabel="Upload"
-          handleFileChange={handleFileChange}
-          handleUpload={handleUpload}
-        />
+        {/* Product Information */}
+        <FormSegment segmentHeader='Product Information'>
+          <div className='flex gap-4 w-full'>
+            <TextField name="name" placeholder="Product Name" fieldType='text' isRequired={true} handleChange={handleChange} />
+            <TextField name="category" placeholder="Product Category" fieldType='text' isRequired={true} handleChange={handleChange} />
+            <TextField name="tags" placeholder="Product Tags" fieldType='text' isRequired={false} handleChange={handleChange} />
+          </div>
+          <TextField name="description" placeholder="Product Description" fieldType='text' isRequired={true} handleChange={handleChange} />
+        </FormSegment>
+        
+        {/*<div className='flex flex-col p-4 gap-2 rounded-xl border-[1px] border-blue-500 shadow-md'>
+          <h1 className='text-xl font-bold text-gray-400'>Product Information</h1>
+          <div className='flex gap-4 w-full'>
+            <TextField name="name" placeholder="Product Name" fieldType='text' isRequired={true} handleChange={handleChange} />
+            <TextField name="category" placeholder="Product Category" fieldType='text' isRequired={true} handleChange={handleChange} />
+            <TextField name="tags" placeholder="Product Tags" fieldType='text' isRequired={false} handleChange={handleChange} />
+          </div>
+          <TextField name="description" placeholder="Product Description" fieldType='text' isRequired={true} handleChange={handleChange} />          
+        </div>*/}
+
+        {/* Product Dimensions */}
+        <FormSegment segmentHeader='Product Dimensions'>
+          <div className='flex gap-4 w-full'>
+            <TextField name="dimensionUnit" placeholder="Dimension Unit" fieldType='text' isRequired={true} handleChange={handleChange} />
+            <TextField name="length" placeholder="Product Length" fieldType='number' isRequired={true} handleChange={handleChange} />
+            <TextField name="width" placeholder="Product Width" fieldType='number' isRequired={true} handleChange={handleChange} />
+            <TextField name="height" placeholder="Product Height" fieldType='number' isRequired={true} handleChange={handleChange} />            
+          </div>
+          <div className='flex gap-4 w-full'>
+            <TextField name="weightUnit" placeholder="Weight Unit" fieldType='text' isRequired={true} handleChange={handleChange} />
+            <TextField name="weight" placeholder="Product Weight" fieldType='number' isRequired={true} handleChange={handleChange} />
+          </div>          
+        </FormSegment>
+        
+        {/*<div className='flex flex-col p-4 gap-2 rounded-xl border-[1px] border-blue-500 shadow-md'>
+          <h1 className='text-xl font-bold text-gray-400'>Product Dimensions</h1>                    
+          <div className='flex gap-4 w-full'>
+            <TextField name="dimensionUnit" placeholder="Dimension Unit" fieldType='text' isRequired={true} handleChange={handleChange} />
+            <TextField name="length" placeholder="Product Length" fieldType='number' isRequired={true} handleChange={handleChange} />
+            <TextField name="width" placeholder="Product Width" fieldType='number' isRequired={true} handleChange={handleChange} />
+            <TextField name="height" placeholder="Product Height" fieldType='number' isRequired={true} handleChange={handleChange} />            
+          </div>
+          <div className='flex gap-4 w-full'>
+            <TextField name="weightUnit" placeholder="Weight Unit" fieldType='text' isRequired={true} handleChange={handleChange} />
+            <TextField name="weight" placeholder="Product Weight" fieldType='number' isRequired={true} handleChange={handleChange} />
+          </div>
+        </div>*/}
+
+        {/* Product Showcase */}
+        <FormSegment segmentHeader='Product Showcase'>
+          <TextField name="materials" placeholder="Product Materials" fieldType='text' isRequired={false} handleChange={handleChange} />          
+          <div className='flex gap-4 w-full'>
+            <FileUploadButton 
+              file={files.poster}
+              bucketName="tryitproductimages"
+              fileType={fileTypes.poster}
+              fileName="poster"
+              buttonLabel="Upload"
+              handleFileChange={handleFileChange}
+              handleUpload={handleUpload}
+            />
+            <FileUploadButton 
+              file={files.glb}
+              bucketName="tryitproductmodels"
+              fileType={fileTypes.glb}
+              fileName="glb"
+              buttonLabel="Upload"
+              handleFileChange={handleFileChange}
+              handleUpload={handleUpload}
+            />
+            <FileUploadButton 
+              file={files.usdz}
+              bucketName="tryitproductmodels"
+              fileType={fileTypes.usdz}
+              fileName="usdz"
+              buttonLabel="Upload"
+              handleFileChange={handleFileChange}
+              handleUpload={handleUpload}
+            />            
+          </div>          
+        </FormSegment>
+        
+        {/*<div className='flex flex-col p-4 gap-2 rounded-xl border-[1px] border-blue-500 shadow-md'>
+          <h1 className='text-xl font-bold text-gray-400'>Product Showcase</h1>
+          <TextField name="materials" placeholder="Product Materials" fieldType='text' isRequired={false} handleChange={handleChange} />          
+          <div className='flex gap-4 w-full'>
+            <FileUploadButton 
+              file={files.poster}
+              bucketName="tryitproductimages"
+              fileType={fileTypes.poster}
+              fileName="poster"
+              buttonLabel="Upload"
+              handleFileChange={handleFileChange}
+              handleUpload={handleUpload}
+            />
+            <FileUploadButton 
+              file={files.glb}
+              bucketName="tryitproductmodels"
+              fileType={fileTypes.glb}
+              fileName="glb"
+              buttonLabel="Upload"
+              handleFileChange={handleFileChange}
+              handleUpload={handleUpload}
+            />
+            <FileUploadButton 
+              file={files.usdz}
+              bucketName="tryitproductmodels"
+              fileType={fileTypes.usdz}
+              fileName="usdz"
+              buttonLabel="Upload"
+              handleFileChange={handleFileChange}
+              handleUpload={handleUpload}
+            />            
+          </div>
+        </div>*/}
+
+        {/* Product Pricing */}
+        <FormSegment segmentHeader='Product Pricing'>
+          <div className='flex gap-4 w-full'>
+            <TextField name="currency" placeholder="Currency" fieldType='text' isRequired={true} handleChange={handleChange} />
+            <TextField name="price" placeholder="Product Price" fieldType='number' isRequired={true} handleChange={handleChange} />            
+          </div>
+          <div className='flex gap-4 w-full'>
+            <TextField name="discountPercent" placeholder="Discount Percent (%)" fieldType='number' isRequired={true} handleChange={handleChange} />
+            <TextField name="discountedPrice" placeholder="Discounted Price" fieldType='number' isRequired={true} handleChange={handleChange} />            
+          </div>          
+        </FormSegment>
+        
+        {/*<div className='flex flex-col p-4 gap-2 rounded-xl border-[1px] border-blue-500 shadow-md'>
+          <h1 className='text-xl font-bold text-gray-400'>Product Pricing</h1>          
+          <div className='flex gap-4 w-full'>
+            <TextField name="currency" placeholder="Currency" handleChange={handleChange} />
+            <TextField name="price" placeholder="Product Price" fieldType='number' isRequired={true} handleChange={handleChange} />            
+          </div>
+          <div className='flex gap-4 w-full'>
+            <TextField name="discountPercent" placeholder="Discount Percent (%)" fieldType='number' isRequired={true} handleChange={handleChange} />
+            <TextField name="discountedPrice" placeholder="Discounted Price" fieldType='number' isRequired={true} handleChange={handleChange} />            
+          </div>
+        </div>*/}        
+        
         <button
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+          className="px-4 py-4 mb-4 bg-green-500 text-white rounded-xl"
           type="button"
           onClick={handleSubmit}
         >
-          Submit All Data
+          Save Product
         </button>
       </form>
     </div>

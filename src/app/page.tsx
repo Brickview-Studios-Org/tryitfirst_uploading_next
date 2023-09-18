@@ -3,10 +3,18 @@ import ModelUploadForm from '../components/ModelUploadForm';
 
 const Page: React.FC = () => {
   return (
-    <div>
-      <h1 className="text-3xl font-bold">Upload Your Model</h1>
-      <ModelUploadForm />
-    </div>
+    <main className='flex flex-col bg-gray-600'>
+      {/* Header Section */}
+      <section className='sticky top-0 flex w-full px-4 py-2 gap-4 items-center rounded-b-lg shadow-lg bg-white z-10'>
+        <h1 className="text-xl font-bold text-blue-500">TryItFirst</h1>
+        <h1 className="text-md font-light">Product Dashboard</h1>
+      </section>
+      
+      {/* Form Section */}
+      <section>
+        <ModelUploadForm />
+      </section>
+    </main>
   );
 };
 
